@@ -1,0 +1,9 @@
+[Inputs]
+zegar
+lewo
+prawo
+[Outputs]
+znak_gotowy
+go_to_beginning
+=znak[7:0]=
+[BiDir]

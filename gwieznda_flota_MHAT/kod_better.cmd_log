@@ -1,0 +1,80 @@
+vhdtdtfi -lib work kod.vhd -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod.vhd -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 
+vhdtdtfi -lib work kod_better.vhd -prj gwieznda_flota_MHAT -o kod_better.spl -module kod_better -template C:/Xilinx/14.7/ISE_DS/ISE//data/splfile.tft -deleteonerror 
+spl2sym -intstyle ise -family spartan3e -w kod_better.spl C:/Users/lab/gwieznda_flota_MHAT/kod_better.sym 

@@ -1,0 +1,10 @@
+xst -intstyle ise -ifn "C:/Users/lab/gwieznda_flota_MHAT/schemat_better.xst" -ofn "C:/Users/lab/gwieznda_flota_MHAT/schemat_better.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc C:/Users/lab/Desktop/GenIO.ucf -p xc3s500e-fg320-4 schemat_better.ngc schemat_better.ngd  
+map -intstyle ise -p xc3s500e-fg320-4 -cm area -ir off -pr off -c 100 -o schemat_better_map.ncd schemat_better.ngd schemat_better.pcf 
+par -w -intstyle ise -ol high -t 1 schemat_better_map.ncd schemat_better.ncd schemat_better.pcf 
+trce -intstyle ise -v 3 -s 4 -n 3 -fastpaths -xml schemat_better.twx schemat_better.ncd -o schemat_better.twr schemat_better.pcf 
+bitgen -intstyle ise -f schemat_better.ut schemat_better.ncd 
+map -intstyle ise -p xc3s500e-fg320-4 -cm area -ir off -pr off -c 100 -o schemat_better_map.ncd schemat_better.ngd schemat_better.pcf 
+par -w -intstyle ise -ol high -t 1 schemat_better_map.ncd schemat_better.ncd schemat_better.pcf 
+trce -intstyle ise -v 3 -s 4 -n 3 -fastpaths -xml schemat_better.twx schemat_better.ncd -o schemat_better.twr schemat_better.pcf 
+bitgen -intstyle ise -f schemat_better.ut schemat_better.ncd 

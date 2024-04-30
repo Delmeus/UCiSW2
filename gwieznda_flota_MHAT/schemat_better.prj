@@ -1,0 +1,3 @@
+vhdl work "kod.vhd"
+vhdl work "kod_better.vhd"
+vhdl work "schemat_better.vhf"
