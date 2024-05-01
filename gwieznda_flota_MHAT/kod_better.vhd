@@ -25,7 +25,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 package Table_Package is
-    type Table_Type is array (0 to 19, 0 to 47) of std_logic_vector(7 downto 0); -- Assuming each element is an 8-bit vector
+    type Table_Type is array (0 to 19, 0 to 47) of std_logic_vector(7 downto 0); 
 end Table_Package;
 
 use work.Table_Package.all;
@@ -43,17 +43,15 @@ signal statek_y : integer range 0 to 47 := 24;
 signal statek_x : integer range 0 to 19 := 17;
 signal tablica_gotowa : STD_LOGIC := '0';
 
---signal losowanie_dzielnik : std_logic_vector(127 downto 0) := X"00000000000000000000000000000000";
+-- Signals for spawning obstacles
 signal lfsr : std_logic_vector(5 downto 0) := (others => '0');
-constant RANDOM_GENERATION_FREQUENCY : integer := 50000000 * 10; -- Assuming a 50 MHz clock, generates random number every 3 seconds
-signal losowanie_dzielnik : std_logic_vector(31 downto 0) := (others => '0');
-signal opadanie_dzielnik : std_logic_vector(31 downto 0) := (others => '0');
+signal random_counter : integer range 0 to 10 := 0;
 
 begin
 process1: process(zegar)
 	begin
 		if rising_edge(zegar) then	
-			-- czyszczenie ca³ej tablicy
+			-- czyszczenie caej tablicy
 			--go_home_temp <= '0';
 			tablica_gotowa <= '0';
 			for x in 0 to 19 loop
@@ -73,33 +71,33 @@ process1: process(zegar)
 			--znak <= myTable(i, j);
 			--temp <= '1';
 			j <= j + 1;
-         if j = 47 then
+         		if j = 47 then
 				j <= 0;
-            i <= i + 1;
-            if i = 19 then
+            			i <= i + 1;
+				if i = 19 then
 					i <= 0;
 					--go_home_temp <= '1';
-            end if;
-         end if;
+				end if;
+         		end if;
 			tablica_gotowa <= '1';
 		end if;
 end process process1;
 
 
 process2: process(zegar)
-    begin
-        if rising_edge(zegar) then
-            if tablica_gotowa = '1' then
-                -- Output the symbol data
-                znak <= myTable(i, j);
-                -- Signal that the symbol is ready to be printed
-                znak_gotowy <= '1';
-            else
-                -- Symbol not ready, output default data (e.g., blank)
-                znak <= (others => '0');
-                znak_gotowy <= '0';
-            end if;
-        end if;
+	begin
+		if rising_edge(zegar) then
+			if tablica_gotowa = '1' then
+			-- Output the symbol data
+			znak <= myTable(i, j);
+			-- Signal that the symbol is ready to be printed
+			znak_gotowy <= '1';
+			else
+			-- Symbol not ready, output default data (e.g., blank)
+			znak <= (others => '0');
+			znak_gotowy <= '0';
+			end if;
+		end if;
 end process process2;
 
 process_sterowanie: process(zegar)
@@ -119,66 +117,41 @@ end process process_sterowanie;
 
 
 
-process_przeszkody: process(zegar)
+process_obstacles: process(zegar)
 	begin
 		if rising_edge(zegar) then
-			--losowanie_dzielnik <= std_logic_vector(unsigned(losowanie_dzielnik)+1);
-			--opadanie_dzielnik <= std_logic_vector(unsigned(opadanie_dzielnik)+1);
-			--if opadanie_dzielnik = X"0000000000000000000000000000000F" then--if opadanie_dzielnik = X"0000000000000000000FFFFFFFFFFFFF" then
-				--opadanie_dzielnik <= X"00000000000000000000000000000000";
-				--for x in 19 downto 0 loop
-					--for y in 47 downto 0 loop
-						--if przeszkody(x,y) = X"10" then
-							--przeszkody(x,y) <= X"00";
-							--if x > 0 then
-								--przeszkody(x-1,y) <= X"10";
-							--end if;
-						--end if;
-					--end loop;
-				--end loop;
-			--end if;
-			--if losowanie_dzielnik =  X"00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" then--if losowanie_dzielnik = X"000000000000000000FFFFFFFFFFFFFF" then
-				--losowanie_dzielnik <= X"00000000000000000000000000000000";
-				--lfsr(5 downto 1) <= lfsr(4 downto 0);
-            -- Generate pseudo-random bit
-            --lfsr(0) <= lfsr(5) xor lfsr(3) xor lfsr(2);
-				--if unsigned(lfsr) < 48 then
-					--przeszkody(0, to_integer(unsigned(lfsr))) <= X"10";
-				--else
-					--przeszkody(0, to_integer(unsigned(lfsr) mod 32)) <= X"10";
-				--end if;
-				--if przeszkody(10,10) = X"00" then
-					--przeszkody(10,10) <= X"15";
-				--else
-					--przeszkody(10,10) <= X"00";
-				--end if;
-			--end if;
-			if losowanie_dzielnik = X"0FFFFFFF" then
-            -- Reset the divider
-            losowanie_dzielnik <= (others => '0');
-            lfsr(5 downto 1) <= lfsr(4 downto 0);
-            -- Generate pseudo-random bit
-            lfsr(0) <= lfsr(5) xor lfsr(3) xor lfsr(2);
-				if unsigned(lfsr) < 48 then
+				for x in 19 downto 0 loop
+					for y in 47 downto 0 loop
+						if przeszkody(x,y) = X"10" then
+							przeszkody(x,y) <= X"00";
+							if x > 0 then
+								przeszkody(x-1,y) <= X"10";
+							end if;
+						end if;
+					end loop;
+				end loop;
+				wait for 500 ms;
+				random_counter <= random_counter+1;
+				if random_counter = 9 then
+					random_counter = 0;
+					losowanie_dzielnik <= (others => '0');
+					lfsr(5 downto 1) <= lfsr(4 downto 0);
+					lfsr(0) <= lfsr(5) xor lfsr(3) xor lfsr(2);
+					if unsigned(lfsr) < 48 then
 					przeszkody(0, to_integer(unsigned(lfsr))) <= X"10";
-				else
+					else
 					przeszkody(0, to_integer(unsigned(lfsr) mod 32)) <= X"10";
-				end if;
-				if przeszkody(10,10) = X"00" then
+					end if;
+					--------------------------------------------------------Do usuniecia
+					if przeszkody(10,10) = X"00" then
 					przeszkody(10,10) <= X"15";
-				else
+					else
 					przeszkody(10,10) <= X"00";
+					end if;
+					--------------------------------------------------------
 				end if;
-            -- Generate random number
-            -- Your random number generation logic here
-            
-            -- Perform other actions associated with random generation
-        else
-            -- Increment the divider
-            losowanie_dzielnik <= std_logic_vector(unsigned(losowanie_dzielnik) + 1);
-        end if;
 		end if;
-    end process process_przeszkody;
+    end process process_obstacles;
 
 --znak_gotowy <= temp;
 --go_to_beginning <= go_home_temp;

@@ -59,33 +59,33 @@ process1: process(zegar)
 			--znak <= myTable(i, j);
 			--temp <= '1';
 			j <= j + 1;
-         if j = 47 then
+         		if j = 47 then
 				j <= 0;
-            i <= i + 1;
-            if i = 19 then
+			   	i <= i + 1;
+			    	if i = 19 then
 					i <= 0;
 					--go_home_temp <= '1';
-            end if;
-         end if;
+			    	end if;
+			end if;
 			tablica_gotowa <= '1';
 		end if;
 end process process1;
 
 
 process2: process(zegar)
-    begin
-        if rising_edge(zegar) then
-            if tablica_gotowa = '1' then
-                -- Output the symbol data
-                znak <= myTable(i, j);
-                -- Signal that the symbol is ready to be printed
-                znak_gotowy <= '1';
-            else
-                -- Symbol not ready, output default data (e.g., blank)
-                znak <= (others => '0');
-                znak_gotowy <= '0';
-            end if;
-        end if;
+    	begin
+        	if rising_edge(zegar) then
+            		if tablica_gotowa = '1' then
+				-- Output the symbol data
+				znak <= myTable(i, j);
+				-- Signal that the symbol is ready to be printed
+				znak_gotowy <= '1';
+            		else
+				-- Symbol not ready, output default data (e.g., blank)
+				znak <= (others => '0');
+				znak_gotowy <= '0';
+            		end if;
+        	end if;
 end process process2;
 
 process_sterowanie: process(zegar)
