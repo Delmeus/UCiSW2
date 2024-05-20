@@ -29,8 +29,13 @@ package Table_Package is
     type Table_Type is array (0 to 19, 0 to 47) of std_logic_vector(7 downto 0);
 end Table_Package;
 
+-- package Table_Package_Binary is
+--     type Table_Binary is array (0 to 19, 0 to 47) of boolean;
+-- end Table_Package_Binary;
+
+
 package Table_Package_Binary is
-    type Table_Binary is array (0 to 19, 0 to 47) of boolean;
+    type Table_Type is array (0 to 19, 0 to 47) of std_logic_vector(1 downto 0);
 end Table_Package_Binary;
 
 package Int_Table_Package is
@@ -46,8 +51,8 @@ architecture Behavioral of kod_shoot is
     signal temp : STD_LOGIC := '0';
     signal go_home_temp : STD_LOGIC := '0';
     signal myTable : Table_Type := (others => (others => "00000000"));
-    signal obstacles : Table_Binary := (others => (others => false));
-    signal shots : Table_Binary := (others => (others => false));
+    signal obstacles : Table_Binary := (others => (others => "00"));
+    --signal shots : Table_Binary := (others => (others => false));
     signal i : integer range 0 to 19 := 0; -- 19
     signal j : integer range 0 to 47 := 0; --47 TO NIE WINA J
     signal ship_x : integer range 0 to 47 := 24;
@@ -72,8 +77,12 @@ begin
                     for x in 0 to 47 loop -- 47
                         if x = ship_x and y = ship_y then
                             myTable(y,x) <= X"0A";
-                        elsif obstacles(y,x) /= false then
+                        elsif obstacles(y,x) = "01" then
                             myTable(y,x) <= X"10";
+                        elsif obstacles(y,x) = "10" then
+                            myTable(y,x) <= X"09";
+                        elsif obstacles(y,x) = "11" then
+                            myTable(y,x) <= X"06";
                         -- elsif x = 0 and y = 0 and score mod 2 = 0 then
                         --     myTable(y,x) <= X"52";
                         else
@@ -194,12 +203,21 @@ begin
 
     process_obstacles: process(zegar)
         variable delay_counter : integer range 0 to 12499999 := 0; -- 250 ms delay
+        variable shot_delay : integer range 0 to 6249999 := 0;
         --variable random_counter : integer range 0 to 10 := 7;
     begin
         if rising_edge(zegar) then
             if game_over = false then
-                if obstacles(ship_y, ship_x) = true then
+                if obstacles(ship_y, ship_x) = "01" or obstacles(ship_y, ship_x) = "10" then
                     game_over <= true;
+                end if;
+                if shot_delay < 6249999 then
+                    shot_delay := shot_delay + 1;
+                else
+                    shot_delay := 0;
+                    if shot = '1' then
+                        obstacles(ship_y - 1, ship_x) <= "11";
+                    end if;
                 end if;
                 if delay_counter < 12499999 then--24999999
                     delay_counter := delay_counter + 1;
@@ -208,14 +226,28 @@ begin
                     -- Causing obstacles to fall - wygląda legitnie
                     for y in 18 downto 0 loop
                         for x in 47 downto 0 loop
-                            if obstacles(y,x) = true then
-                                obstacles(y,x) <= false;
-                                if y < 19 then -- ewentualnie 18
-                                    obstacles(y+1,x) <= true;
+                            -- Opadanie meteoru
+                            if obstacles(y,x) = "01" then
+                                if y < 19 then
+                                    obstacles(y+1,x) <= obstacles(y,x);
                                 end if;
-                                if shots(y+1,x) = true then
-                                    obstacles(y+1,x) <= false;
+                                obstacles(y,x) <= "00";
+                            -- opadanie statkow
+                            elsif obstacles(y,x) = "10" then
+                                if y < 19 then
+                                    obstacles(y,x) <= "00";
+                                    if obstacles(y+1,x) = "11" then
+                                        obstacles(y+1,x) <= "00";
+                                    else
+                                        obstacles(y+1,x) <= "10";
+                                    end if;
                                 end if;
+                            -- strzaly
+                            elsif obstacles(y,x) = "11" then
+                                if y > 0 then
+                                    obstacles(y-1,x) <= "11";
+                                end if;
+                                obstacles(y,x) <= "00";
                             end if;
                         end loop;
                     end loop;
@@ -226,9 +258,9 @@ begin
                         lfsr(5 downto 1) <= lfsr(4 downto 0);
                         lfsr(0) <= lfsr(5) xor lfsr(3) xor lfsr(2);
                         if unsigned(lfsr) < 48 then
-                            obstacles(0, to_integer(unsigned(lfsr))) <= true;
+                            obstacles(0, to_integer(unsigned(lfsr))) <= "01";
                         else
-                            obstacles(0, to_integer(unsigned(lfsr) - 40)) <= true;
+                            obstacles(0, to_integer(unsigned(lfsr) - 40)) <= "01";
                         end if;
                     end if;
                 end if;
@@ -260,34 +292,6 @@ begin
         end if;
     end process process_score;
 
-
-
-    process_shooting: process(zegar)
-        variable delay_counter : integer range 0 to 12499999 := 0;
-    begin
-        if rising_edge(zegar) then
-            if game_over = false then
-                if delay_counter < 12499999 then
-                    delay_counter := delay_counter + 1;
-                else
-                    delay_counter := 0;
-                    for y in 0 to 18 loop
-                        for x in 0 to 47 loop
-                            if shots(y,x) = true then
-                                shots(y,x) <= false;
-                                if y > 0 then
-                                    shots(y-1,x) <= true;
-                                end if;
-                            end if;
-                        end loop;
-                    end loop;
-                    if shot = '1' then
-                        shots(ship_y - 1, ship_x) <= true;
-                    end if;
-                end if;
-            end if;
-        end if;
-    end process;
 
     --go_to_beginning <= go_home_temp;
 end Behavioral;
