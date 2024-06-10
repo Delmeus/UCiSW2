@@ -29,8 +29,16 @@ package Table_Package is
     type Table_Type is array (0 to 19, 0 to 47) of std_logic_vector(7 downto 0);
 end Table_Package;
 
+--package Table_Package_Binary is
+  --  type Table_Binary is array (0 to 19, 0 to 47) of boolean;
+--end Table_Package_Binary;
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
 package Table_Package_Binary is
-    type Table_Binary is array (0 to 19, 0 to 47) of boolean;
+    type Table_Binary is array (0 to 19, 0 to 47) of std_logic_vector(1 downto 0);
 end Table_Package_Binary;
 
 package Int_Table_Package is
@@ -39,6 +47,9 @@ end Int_Table_Package;
 
 use work.Table_Package.all;
 use work.Table_Package_Binary.all;
+use work.Int_Table_Package.all;
+
+
 
 architecture Behavioral of kod_shoot is
     signal game_over : boolean := false;
@@ -46,8 +57,8 @@ architecture Behavioral of kod_shoot is
     signal temp : STD_LOGIC := '0';
     signal go_home_temp : STD_LOGIC := '0';
     signal myTable : Table_Type := (others => (others => "00000000"));
-    signal obstacles : Table_Binary := (others => (others => false));
-    signal shots : Table_Binary := (others => (others => false));
+    signal obstacles : Table_Binary := (others => (others => "00"));
+    signal shots : Table_Binary := (others => (others => "00"));
     signal i : integer range 0 to 19 := 0; -- 19
     signal j : integer range 0 to 47 := 0; --47 TO NIE WINA J
     signal ship_x : integer range 0 to 47 := 24;
@@ -55,27 +66,23 @@ architecture Behavioral of kod_shoot is
     signal tablica_gotowa : STD_LOGIC := '0';
     --signal score : integer := 0;
     signal score : Int_Table_Type := (0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    signal new_char_code : integer;
     signal lfsr : std_logic_vector(5 downto 0) := ("101001");--(others => '0');
     signal random_counter : integer range 0 to 10 := 7;
 
 
 begin
     process1: process(zegar)
+    variable : new_char_code : integer;
     begin
         if rising_edge(zegar) then
-            -- czyszczenie całej tablicy
-            --go_home_temp <= '0';
             if game_over = false then
                 tablica_gotowa <= '0';
                 for y in 0 to 19 loop -- 19
                     for x in 0 to 47 loop -- 47
                         if x = ship_x and y = ship_y then
                             myTable(y,x) <= X"0A";
-                        elsif obstacles(y,x) /= false then
+                        if obstacles(y,x) = "01" then
                             myTable(y,x) <= X"10";
-                        -- elsif x = 0 and y = 0 and score mod 2 = 0 then
-                        --     myTable(y,x) <= X"52";
                         else
                             myTable(y,x) <= X"00";
                         end if;
@@ -111,19 +118,6 @@ begin
                     myTable(11,26 - i) <= std_logic_vector(to_unsigned(new_char_code, 8));
                 end loop;
             end if;
-            --myTable(0,35) <= X"1C";
-            --myTable(10,15) <= X"01";
-            --znak <= myTable(i, j);
-            --temp <= '1';
-            --j <= j + 1;
-            --if j = 47 then --47
-            --j <= 0;
-            --i <= i + 1;
-            --if i = 19 then--19
-            --i <= 0;
-            --go_home_temp <= '1';
-            --end if;
-            --end if;
             tablica_gotowa <= '1';
         end if;
     end process process1;
@@ -144,7 +138,6 @@ begin
                     i <= i + 1;
                     if i = 19 then--19
                         i <= 0;
-                        --go_home_temp <= '1';
                     end if;
                 end if;
             else
@@ -194,11 +187,12 @@ begin
 
     process_obstacles: process(zegar)
         variable delay_counter : integer range 0 to 12499999 := 0; -- 250 ms delay
+     	variable change_lsfr : integer := 0;
         --variable random_counter : integer range 0 to 10 := 7;
     begin
         if rising_edge(zegar) then
             if game_over = false then
-                if obstacles(ship_y, ship_x) = true then
+                if obstacles(ship_y, ship_x) = "01" then
                     game_over <= true;
                 end if;
                 if delay_counter < 12499999 then--24999999
@@ -206,30 +200,55 @@ begin
                 else
                     delay_counter := 0;
                     -- Causing obstacles to fall - wygląda legitnie
-                    for y in 18 downto 0 loop
+                    for y in 19 downto 0 loop -- bylo 18 26.05
                         for x in 47 downto 0 loop
-                            if obstacles(y,x) = true then
-                                obstacles(y,x) <= false;
+                            -- causing meteorites to fall
+                            if obstacles(y,x) = "01" then
+                                obstacles(y,x) <= "00";
                                 if y < 19 then -- ewentualnie 18
-                                    obstacles(y+1,x) <= true;
+                                    obstacles(y+1,x) <= "01";
+                                else
+                                    obstacles(y,x) <= "00";
                                 end if;
-                                if shots(y+1,x) = true then
-                                    obstacles(y+1,x) <= false;
-                                end if;
-                            end if;
+                            -- causing enemy ships to fall
+                            --elsif obstacles(y,x) = "10" then
+                                --if y < 19 then
+                                    --obstacles(y,x) <= "00";
+                                    --if obstacles(y+1,x) = "11" then
+                                        --obstacles(y+1,x) <= "00";
+                                    --else
+                                        --obstacles(y+1,x) <= "10";
+                                    --end if;
+                                --end if;
+                            -- controlling players shots
+                            --elsif obstacles(y,x) = "11" then
+                                --if y > 0 then
+                                    --obstacles(y-1,x) <= "11";
+                                --end if;
+                                --obstacles(y,x) <= "00";
+                            --end if;
                         end loop;
                     end loop;
                     -- Generate new obstacles
                     random_counter <= random_counter + 1;
                     if random_counter = 2 then
+                    	change_lsfr += 1;
                         random_counter <= 0;
                         lfsr(5 downto 1) <= lfsr(4 downto 0);
                         lfsr(0) <= lfsr(5) xor lfsr(3) xor lfsr(2);
                         if unsigned(lfsr) < 48 then
-                            obstacles(0, to_integer(unsigned(lfsr))) <= true;
+                            obstacles(0, to_integer(unsigned(lfsr))) <= "01";
                         else
-                            obstacles(0, to_integer(unsigned(lfsr) - 40)) <= true;
+                            obstacles(0, to_integer(unsigned(lfsr) - 40)) <= "01";
                         end if;
+                    end if;
+                    if change_lsfr = 20 then
+                    	change_lsfr := 0;
+                    	-- tutaj dodac zmienianie
+                    	--variable new_val : integer := to_integer(unsigned(lsfr)) + 1;
+                    if lsfr = "000000" then
+                    	lsfr <= "010110";
+                    end if;
                     end if;
                 end if;
             end if;
@@ -240,7 +259,7 @@ begin
 
     process_score: process(zegar)
         variable delay_counter : integer range 0 to 24999999 := 0;
-        variable score_pointer : integer := 0;
+        --variable score_pointer : integer := 0;
     begin
         if rising_edge(zegar) then
             if game_over = false then
@@ -250,7 +269,7 @@ begin
                     delay_counter := 0;
                     score(0) <= score(0) + 1;
                     for i in 0 to 9 loop
-                        if score(i) = 10 and i /= 9 then
+                        if score(i) > 9 and i < 9 then -- handling overflow
                             score(i) <= 0;
                             score(i+1) <= score(i+1) + 1;
                         end if;
@@ -273,16 +292,16 @@ begin
                     delay_counter := 0;
                     for y in 0 to 18 loop
                         for x in 0 to 47 loop
-                            if shots(y,x) = true then
-                                shots(y,x) <= false;
+                            if shots(y,x) = "01" then
+                                shots(y,x) <= "00";
                                 if y > 0 then
-                                    shots(y-1,x) <= true;
+                                    shots(y-1,x) <= "01";
                                 end if;
                             end if;
                         end loop;
                     end loop;
                     if shot = '1' then
-                        shots(ship_y - 1, ship_x) <= true;
+                        shots(ship_y - 1, ship_x) <= "01";
                     end if;
                 end if;
             end if;
