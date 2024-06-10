@@ -15,7 +15,6 @@ entity kod_kbd is
         my_clk : in  STD_LOGIC;
         symbol : out  STD_LOGIC_VECTOR (7 downto 0);
         symbol_ready : out  STD_LOGIC;
-        go_to_beginning : out STD_LOGIC;
         keyboard : in STD_LOGIC_VECTOR (7 downto 0);
         keyboard_status : in STD_LOGIC
     )
@@ -49,21 +48,27 @@ use work.Int_Table_Package.all;
 
 
 architecture Behavioral of kod_kbd is
-    signal game_over : boolean := false;
-    signal myTable : Table_Type := (others => (others => "00000000"));
+    -- map control
     signal obstacles : Table_Binary := (others => (others => false));
+    signal myTable : Table_Type := (others => (others => "00000000"));
+    signal table_ready : STD_LOGIC := '0';
     signal i : integer range 0 to 19 := 0;
     signal j : integer range 0 to 47 := 0;
+
+    -- ship control
     signal ship_x : integer range 0 to 47 := 24;
     signal ship_y : integer range 0 to 19 := 17;
-    signal tablica_gotowa : STD_LOGIC := '0';
 
-    signal score : Int_Table_Type := (0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    -- random obstacle generation
     signal lfsr : std_logic_vector(5 downto 0) := ("101001");
     signal random_counter : integer range 0 to 10 := 7;
 
+    -- game control
+    signal game_over : boolean := false;
     signal new_game : STD_LOGIC := '0';
 
+    -- score counter
+    signal score : Int_Table_Type := (0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 begin
     process1: process(my_clk)
@@ -71,15 +76,13 @@ begin
     begin
         if rising_edge(my_clk) then
             if game_over = false then
-                tablica_gotowa <= '0';
-                for y in 0 to 19 loop -- 19
-                    for x in 0 to 47 loop -- 47
+                table_ready <= '0';
+                for y in 0 to 19 loop
+                    for x in 0 to 47 loop
                         if x = ship_x and y = ship_y then
                             myTable(y,x) <= X"4F";
                         elsif (x  = ship_x - 1 or x = ship_x + 1) and y = ship_y then
-                            --if  then
                             myTable(y,x) <= X"2D";
-                            --end if;
                         elsif obstacles(y,x) = true then
                             myTable(y,x) <= X"10";
                         else
@@ -97,8 +100,8 @@ begin
                     myTable(19,16 - i) <= std_logic_vector(to_unsigned(new_char_code, 8));
                 end loop;
             else
-                for y in 0 to 19 loop -- 19
-                    for x in 0 to 47 loop -- 47
+                for y in 0 to 19 loop
+                    for x in 0 to 47 loop
                         myTable(y,x) <= X"00";
                     end loop;
                 end loop;
@@ -117,7 +120,7 @@ begin
                     myTable(11,26 - i) <= std_logic_vector(to_unsigned(new_char_code, 8));
                 end loop;
             end if;
-            tablica_gotowa <= '1';
+            table_ready <= '1';
         end if;
     end process process1;
 
@@ -126,7 +129,7 @@ begin
     process2: process(my_clk)
     begin
         if rising_edge(my_clk) then
-            if tablica_gotowa = '1' then
+            if table_ready = '1' then
                 -- Output the symbol data
                 symbol <= myTable(i, j);
                 -- Signal that the symbol is ready to be printed
