@@ -1,14 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity kod_kbd is
     Port (
@@ -61,17 +53,16 @@ architecture Behavioral of kod_kbd is
 
     -- random obstacle generation
     signal lfsr : std_logic_vector(5 downto 0) := ("101001");
-    signal random_counter : integer range 0 to 10 := 7;
 
     -- game control
     signal game_over : boolean := false;
-    signal new_game : STD_LOGIC := '0';
+    signal neDw_game : boolean := false;
 
     -- score counter
     signal score : Int_Table_Type := (0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 begin
-    process1: process(my_clk)
+    process_map: process(my_clk)
     variable new_char_code : integer;
     begin
         if rising_edge(my_clk) then
@@ -122,11 +113,11 @@ begin
             end if;
             table_ready <= '1';
         end if;
-    end process process1;
+    end process process_map;
 
 
 
-    process2: process(my_clk)
+    process_print: process(my_clk)
     begin
         if rising_edge(my_clk) then
             if table_ready = '1' then
@@ -148,7 +139,7 @@ begin
                 symbol_ready <= '0';
             end if;
         end if;
-    end process process2;
+    end process process_print;
 
 
 
@@ -158,28 +149,25 @@ begin
         if rising_edge(my_clk) then
             delay_counter := delay_counter + 1;
             if game_over = false then
-                new_game <= '0';
+                new_game <= false;
                 if delay_counter = 3125000 then
                     delay_counter := 0;
-                    if keyboard_status = '1' then
-                        if keyboard = X"4B" and ship_x > 1 then -- left
-                            ship_x <= ship_x - 1;
-                        elsif keyboard = X"4D" and ship_x < 46 then -- right
-                            ship_x <= ship_x + 1;
-                        elsif keyboard = X"48" and ship_y > 1 then -- up
-                            ship_y <= ship_y - 1;
-                        elsif keyboard = X"50" and ship_y < 19 then -- down
-                            ship_y <= ship_y + 1;
-                        end if;
+                    if keyboard = X"1C" and ship_x > 1 then -- left
+                        ship_x <= ship_x - 1;
+                    elsif keyboard = X"23" and ship_x < 46 then -- right
+                        ship_x <= ship_x + 1;
+                        --elsif keyboard = X"48" and ship_y > 1 then -- up
+                        --	 ship_y <= ship_y - 1;
+                        --elsif keyboard = X"50" and ship_y < 18 then -- down
+                        --	 ship_y <= ship_y + 1;
                     end if;
                 end if;
             end if;
             if game_over = true then
-                if delay_counter = 3125000 and keyboard_status = '1' and keyboard = X"39" then --niby spacja, nw
-                    game_over := false;
+                if delay_counter = 3125000 and keyboard = X"76" then
                     ship_x <= 24;
-                    ship_y <= 17;
-                    new_game <= '1';
+                    --ship_y <= 17;
+                    new_game <= true;
                 end if;
             end if;
         end if;
@@ -190,32 +178,28 @@ begin
     process_obstacles: process(my_clk)
     variable delay_counter : integer range 0 to 12499999 := 0; -- 250 ms delay
     variable change_lfsr : integer := 0;
-    variable prev_lfsr : STD_LOGIC_VECTOR(5 downto 0) := "000000";
     begin
         if rising_edge(my_clk) then
-            if new_game = '1' then
-                for y in 19 downto 0 loop
-                    for x in 47 downto 0 loop
-                        obstacles(y,x) <= false;
-                    end loop;
-                end loop;
+            if new_game = true then
+                game_over <= false;
+                obstacles <= (others => (others => false));
             end if;
 
             if game_over = false then
                 if obstacles(ship_y, ship_x) = true or obstacles(ship_y, ship_x - 1) = true or obstacles(ship_y, ship_x + 1) = true then
                     game_over <= true;
                 end if;
-                if delay_counter < 12499999 then--24999999
+                if delay_counter < 12499999 then
                     delay_counter := delay_counter + 1;
                 else
                     delay_counter := 0;
-                    -- Causing obstacles to fall - wygląda legitnie
-                    for y in 19 downto 0 loop -- bylo 18 26.05
+                    -- Causing obstacles to fall
+                    for y in 19 downto 0 loop
                         for x in 47 downto 0 loop
                             -- causing meteorites to fall
                             if obstacles(y,x) = true then
                                 obstacles(y,x) <= false;
-                                if y < 19 then -- ewentualnie 18
+                                if y < 19 then
                                     obstacles(y+1,x) <= true;
                                 else
                                     obstacles(y,x) <= false;
@@ -225,26 +209,19 @@ begin
                     end loop;
 
                     -- Generate new obstacles
-                    random_counter <= random_counter + 1;
-                    if random_counter = 1 then
-                        change_lfsr := change_lfsr + 1;
-                        random_counter <= 0;
-                        prev_lfsr <= lfsr; -- uwaga
-                        lfsr(5 downto 1) <= lfsr(4 downto 0);
-                        lfsr(0) <= lfsr(5) xor lfsr(3) xor lfsr(2);
-                        if unsigned(lfsr) < 48 then
-                            obstacles(0, to_integer(unsigned(lfsr))) <= true;
-                        else
-                            obstacles(0, to_integer(unsigned(lfsr) - 40)) <= true;
-                        end if;
+                    change_lfsr := change_lfsr + 1;
+
+                    lfsr(5 downto 1) <= lfsr(4 downto 0);
+                    lfsr(0) <= lfsr(5) xor lfsr(3) xor lfsr(2);
+                    if unsigned(lfsr) < 48 then
+                        obstacles(0, to_integer(unsigned(lfsr))) <= true;
+                    else
+                        obstacles(0, to_integer(unsigned(lfsr) - 40)) <= true;
                     end if;
 
                     if change_lfsr = 20 then
                         change_lfsr := 0;
-                        lfsr <= std_logic_vector(unsigned(lfsr)+2);
-                    end if;
-                    if lfsr = "000000" or prev_lfsr = lfsr then -- uwaga
-                        lfsr <= "011110";
+                        lfsr <= std_logic_vector(unsigned(lfsr)+3);
                     end if;
                 end if;
             end if;
@@ -257,7 +234,7 @@ begin
     variable delay_counter : integer range 0 to 24999999 := 0;
     begin
         if rising_edge(my_clk) then
-            if new_game = '1' then
+            if new_game = true then
                 for i in 0 to 9 loop
                     score(i) <= 0;
                 end loop;
