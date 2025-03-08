@@ -162,7 +162,6 @@ begin
             if game_over = true then
                 if delay_counter = 3125000 and keyboard = X"76" then
                     ship_x <= 24;
-                    --ship_y <= 17;
                     new_game <= true;
                 end if;
             end if;
